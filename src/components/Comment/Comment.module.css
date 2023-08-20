@@ -48,3 +48,11 @@
   top: 20px;
   right: 20px;
 }
+.btnSaveEdit {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+.input {
+  @apply mt-1 block w-full !rounded-md !border-gray-300 !shadow-sm focus:!border-indigo-300 focus:!ring focus:!ring-indigo-200 focus:!ring-opacity-50 resize-none;
+}
