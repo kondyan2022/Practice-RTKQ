@@ -1,9 +1,10 @@
-import React from 'react';
-import styles from './Comment.module.css';
-import PropTypes from 'prop-types';
-import { TiThumbsUp, TiThumbsDown } from 'react-icons/ti';
-import { formatDateToNow } from '../../helpers/formatDateToNow';
-import { Button } from '../Button/Button';
+import React from "react";
+import styles from "./Comment.module.css";
+import PropTypes from "prop-types";
+import { TiThumbsUp, TiThumbsDown, TiTrash } from "react-icons/ti";
+import { formatDateToNow } from "../../helpers/formatDateToNow";
+import { Button } from "../Button/Button";
+import { useDeleteCommentMutation } from "../../redux/commentApi";
 
 export const Comment = ({
   createdAt,
@@ -14,6 +15,15 @@ export const Comment = ({
   thumbsDown,
   id,
 }) => {
+  const [deleteComment, { isLoading }] = useDeleteCommentMutation();
+  const handleDelete = async () => {
+    try {
+      await deleteComment(id);
+      toast.success("comment deleted");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <li className={styles.card}>
       <img className={styles.avatar} src={avatar} alt={author} />
@@ -26,7 +36,9 @@ export const Comment = ({
             <span className={styles.blockquote}>"</span>
           </p>
         </div>
-
+        <div className={styles.btnTrash} onClick={handleDelete}>
+          <TiTrash size={36} />
+        </div>
         <div className={styles.cardFooter}>
           <span className={styles.date}>{formatDateToNow(createdAt)}</span>
 
@@ -35,7 +47,7 @@ export const Comment = ({
               <TiThumbsUp className={styles.icon} />
             </Button>
 
-            <Button counter={thumbsDown} role='thumbsDown' id={id}>
+            <Button counter={thumbsDown} role="thumbsDown" id={id}>
               <TiThumbsDown className={styles.icon} />
             </Button>
           </div>
